@@ -1,25 +1,18 @@
+import sys
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from bs4 import BeautifulSoup
 import json
 import time
 from utils import filter_results  # Assuming this exists
 
 def dynamic_scraper(url, search_term=None):
     options = Options()
-    options.headless = True  # Run Selenium in headless mode
-    options.add_argument('--no-sandbox')  # Bypass OS security model
-    options.add_argument('--disable-dev-shm-usage')  # Overcome limited resource problems
-    options.add_argument('--remote-debugging-port=9222')  # Enable remote debugging
-    options.add_argument('--disable-gpu')  # Disable GPU acceleration
-
-    # Path to your ChromeDriver executable
-    # Adjust this path as per your setup
-    driver_service = Service('/path/to/chromedriver')  # Set the correct path here
-    driver = webdriver.Chrome(service=driver_service, options=options)
-
+    options.headless = True  # Run Selenium in headless mode (no GUI)
+    
+    # Specify the correct path to your ChromeDriver here
+    driver = webdriver.Chrome(options=options)
     try:
         # Load the URL and wait for the page to render
         driver.get(url)
@@ -32,7 +25,7 @@ def dynamic_scraper(url, search_term=None):
         # Initialize results
         results = []
 
-        # Scrape video data from the page
+        # Scrape video data from the page (adjust the tags according to your target page)
         videos = soup.find_all('div', class_='thumb')
         
         if not videos:
@@ -81,5 +74,3 @@ def dynamic_scraper(url, search_term=None):
     finally:
         # Ensure driver quits even if there’s an error
         driver.quit()
-
-
