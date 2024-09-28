@@ -10,7 +10,11 @@ from utils import filter_results  # Assuming this exists
 def dynamic_scraper(url, search_term=None):
     options = Options()
     options.headless = True  # Run Selenium in headless mode (no GUI)
-    
+    options.add_argument('--no-sandbox')  # Bypass OS security model
+    options.add_argument('--disable-dev-shm-usage')  # Overcome limited resource problems
+    options.add_argument('--remote-debugging-port=9222')  # Required for remote debugging
+    options.add_argument('--disable-gpu')  # Applicable for Windows OS
+
     # Specify the correct path to your ChromeDriver here
     driver = webdriver.Chrome(options=options)
     try:
